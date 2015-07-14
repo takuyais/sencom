@@ -9,10 +9,14 @@ get_fp() {
 }
 
 commitmsg_fp=$(get_fp "$(git rev-parse --git-dir)/COMMIT_EDITMSG")
+tagmsg_fp=$(get_fp "$(git rev-parse --git-dir)/TAG_EDITMSG")
 
-if [ "$(get_fp "$1")" == "${commitmsg_fp}" ]; then
-    eval ${git_core_editor} ${commitmsg_specific_opt} "$1"
-else
-    eval ${git_core_editor} "$@"
-fi
+case "$(get_fp "$1")" in
+    ${commitmsg_fp} | ${tagmsg_fp} )
+        eval ${git_core_editor} ${commitmsg_specific_opt} "$1"
+        ;;
+    * )
+        eval ${git_core_editor} "$@"
+        ;;
+esac
 
