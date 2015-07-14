@@ -8,7 +8,7 @@ get_fp() {
     echo "$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
 }
 
-commitmsg_fp=$(get_fp "${GIT_DIR}/COMMIT_EDITMSG")
+commitmsg_fp=$(get_fp "$(git rev-parse --git-dir)/COMMIT_EDITMSG")
 
 if [ "$(get_fp "$1")" == "${commitmsg_fp}" ]; then
     eval ${git_core_editor} ${commitmsg_specific_opt} "$1"
